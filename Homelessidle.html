@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Idle Homeless Game</title>
+</head>
+<body>
+
+   
+  <img src="https://cdn-icons-png.flaticon.com/512/6608/6608323.png" alt="Homeless character" style=width:64px;height:64px;  <h1>Homeless idle </h1></img>
+  <div>
+    
+    <p>Money: <span id="money">0$ (+0)</p>
+    <p>Hunger: <span id="hunger">100</span>%</p>
+    <p>Happiness: <span id="sad">100% (+0)</p>
+    <p>Heat: <span id="heat">100%</p>
+    <button onclick="earnMoney()">Ask for spare change</button>
+    <button onclick="spendMoney()">Buy a meal 3$ </button>
+     <button onclick="spendHappy()">Buy a ticket to for carnival 15$ </button>
+     <button onclick="buypet()">Buy a cockroach pet (40$) (+1 happiness every second)</button>
+     <button onclick="buybuddy()">Buy a doll of your self (100$) (+2 money every second)</button>
+  <script>
+    const hungerDecay = 1; // Hunger decays by this percentage per second
+    const hungerRecovery = 25;
+    const happinesDecay = 2; // Hunger decays by this percentage per second
+    const happinesRecovery = 25;// Hunger is restored by this amount when a
+    var autohappy = 0;
+    var automoney = 0;
+    let hasHouse = false; // Has house
+    let hungerTimer; // Timer for hunger decay
+    let mugged = false; // Flag to check if the player has been mugged
+    const heat = document.getElementById('heat');
+  
+      hungerTimer = setInterval(decayHunger, 1000);
+      sadTimer = setInterval(decayhappines, 4000);
+		petTimer = setInterval(earnhappiness, 1000);
+      dollTimer = setInterval(moneyez, 1000);
+	heater = setInterval(heatez, 1000);
+function moneyez() {   
+      const hungers = document.getElementById('money');
+      hungers.innerText = Math.max(0, parseInt(hungers.innerText) + autohappy)+ "$ (+" + automoney + ")";
+      //HEAT MANAGEMENT
+
+    }
+
+
+function earnhappiness() {   
+      const hungers = document.getElementById('sad');
+      hungers.innerText = Math.max(0, parseInt(hungers.innerText) + autohappy)+ "% (+" + autohappy + ")";
+      
+
+    }
+         
+
+    function decayhappines() {
+      // Decrease hunger by the decay rate
+      const hungers = document.getElementById('sad');
+      hungers.innerText = Math.max(0, parseInt(hungers.innerText) - happinesDecay);
+      hungers.innerText = hungers.innerText;
+      // Check if hunger has reached 0
+      if (hungers.innerText == 0) {
+        // Stop the hunger timer and display a game over message
+        clearInterval(sadTimer);
+        alert('You went insane!');
+      }
+    }
+        function heatez() {
+        
+              if (hasHouse) {
+      clearInterval(heater);
+      
+      heat.innerText = "Infinite heat because u have a house";
+      } else {
+ 
+     
+     
+        
+      // Decrease hunger by the decay rate
+      const hungers = document.getElementById('heat');
+      hungers.innerText = Math.max(0, parseInt(hungers.innerText) - 5) + "%";
+      hungers.innerText = hungers.innerText;
+      // Check if hunger has reached 0
+      if (hungers.innerText == 0) {
+        // Stop the hunger timer and display a game over message
+        clearInterval(heater);
+        alert('You froze to death!');
+      }
+       }
+    }
+    
+    function decayHunger() {
+      // Decrease hunger by the decay rate
+      const hunger = document.getElementById('hunger');
+      hunger.innerText = Math.max(0, parseInt(hunger.innerText) - hungerDecay);
+      
+      // Check if hunger has reached 0
+      if (hunger.innerText == 0) {
+        // Stop the hunger timer and display a game over message
+        clearInterval(hungerTimer);
+        alert('You have died of starvation!');
+      }
+    }
+    function buypet() {
+      // Decrease money by a fixed amount
+      const money = document.getElementById('money');
+      const cost = 40;
+      if (parseInt(money.innerText) >= cost) {
+        money.innerText = parseInt(money.innerText) - cost + "$";
+        
+        // Increase happiness by the recovery amount
+       autohappy =+ 1;
+      } else {
+        // Not enough money
+        alert('You do not have enough money to buy a pet!');
+      }
+    }
+    
+       function buybuddy() {
+      // Decrease money by a fixed amount
+      const money = document.getElementById('money');
+      const cost = 100;
+      if (parseInt(money.innerText) >= cost) {
+        money.innerText = parseInt(money.innerText) - cost + "$";
+        
+        // Increase happiness by the recovery amount
+       automoney =+ 1;
+      } else {
+        // Not enough money
+        alert('You do not have enough money to buy a doll!');
+      }
+    }
+    function earnMoney() {
+      // Increase money by a random amount
+      const money = document.getElementById('money');
+      money.innerText = parseInt(money.innerText) + Math.floor(Math.random() * 2) + "$" + " (+" + automoney + ")";
+      
+      // Check if the player has been mugged
+      if (mugged) {
+        // Reset the mugged flag and decrease money by 50%
+        mugged = false;
+        alert("Mugged")
+        money.innerText = Math.floor(parseInt(money.innerText) / 2);
+      }
+    }
+    
+    function spendMoney() {
+      // Decrease money by a fixed amount
+      const money = document.getElementById('money');
+      const cost = 3;
+      if (parseInt(money.innerText) >= cost) {
+        money.innerText = parseInt(money.innerText) - cost + "$";
+        
+        // Increase hunger by the recovery amount
+        const hunger = document.getElementById('hunger');
+        hunger.innerText = Math.min(100, parseInt(hunger.innerText) + hungerRecovery);
+      } else {
+        // Not enough money
+        alert('You do not have enough money to buy a meal!');
+      }
+    }
+    function spendHappy() {
+      // Decrease money by a fixed amount
+      const moneys = document.getElementById('money');
+      const cost = 15;
+      if (parseInt(money.innerText) >= cost) {
+        money.innerText = parseInt(moneys.innerText) - cost + "$";
+        
+        // Increase hunger by the recovery amount
+        const hungers = document.getElementById('sad');
+        hungers.innerText = Math.min(100, parseInt(hungers.innerText) + happinesRecovery);
+      } else {
+        // Not enough money
+        alert('You do not have enough money to buy a meal!');
+      }
+    }
+    
+    function getMugged() {
+      // Set the mugged flag to true
+      mugged = true;
+      alert('You have been mugged and lost half your money!');
+    }
+  </script>
+</body>
+</html>

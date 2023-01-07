@@ -18,6 +18,7 @@
      <button onclick="spendHappy()">Buy a ticket to for carnival 15$ </button>
      <button onclick="buypet()">Buy a cockroach pet (40$) (+1 happiness every second)</button>
      <button onclick="buybuddy()">Buy a doll of your self (100$) (+2 money every second)</button>
+        <button onclick="buyhouse()"id="house">Buy a house (1,2K) (Infinite heat when bills are payed)</button>
   <script>
     const hungerDecay = 1; // Hunger decays by this percentage per second
     const hungerRecovery = 25;
@@ -34,7 +35,7 @@
       sadTimer = setInterval(decayhappines, 4000);
 		petTimer = setInterval(earnhappiness, 1000);
       dollTimer = setInterval(moneyez, 1000);
-	heater = setInterval(heatez, 1000);
+	heater = setInterval(heatez, 10000);
 function moneyez() {   
       const hungers = document.getElementById('money');
       hungers.innerText = Math.max(0, parseInt(hungers.innerText) + autohappy)+ "$ (+" + automoney + ")";
@@ -113,7 +114,20 @@ function earnhappiness() {
         alert('You do not have enough money to buy a pet!');
       }
     }
-    
+    function buyhouse() {
+      // Decrease money by a fixed amount
+      const money = document.getElementById('money');
+      const cost = 10;
+      if (parseInt(money.innerText) >= cost) {
+        money.innerText = parseInt(money.innerText) - cost + "$";
+        
+       hasHouse = true;
+       document.getElementById("house").disabled = true;
+      } else {
+        // Not enough money
+        alert('You do not have enough money to buy a pet!');
+      }
+  }
        function buybuddy() {
       // Decrease money by a fixed amount
       const money = document.getElementById('money');
@@ -173,11 +187,6 @@ function earnhappiness() {
       }
     }
     
-    function getMugged() {
-      // Set the mugged flag to true
-      mugged = true;
-      alert('You have been mugged and lost half your money!');
-    }
   </script>
 </body>
 </html>
